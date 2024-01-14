@@ -1,6 +1,4 @@
 module.exports = {
-  printWidth: 80,
-  plugins: [
-    "prettier-plugin-tailwindcss",
-  ],
+  printWidth: 160,
+  plugins: ["prettier-plugin-tailwindcss"],
 };

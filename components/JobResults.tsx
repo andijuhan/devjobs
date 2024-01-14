@@ -7,9 +7,7 @@ import { Prisma } from "@prisma/client";
 interface JobResultProps {
   filterValues: jobFilterValues;
 }
-const JobResults: React.FC<JobResultProps> = async ({
-  filterValues: { q, type, location, remote },
-}) => {
+const JobResults: React.FC<JobResultProps> = async ({ filterValues: { q, type, location, remote } }) => {
   const searchString = q
     ?.split(" ")
     .filter((word) => word.length > 0)
@@ -30,13 +28,7 @@ const JobResults: React.FC<JobResultProps> = async ({
     : {};
 
   const where: Prisma.JobWhereInput = {
-    AND: [
-      searchFilter,
-      type ? { type } : {},
-      location ? { location } : {},
-      remote ? { locationType: "Remote" } : {},
-      { approved: true },
-    ],
+    AND: [searchFilter, type ? { type } : {}, location ? { location } : {}, remote ? { locationType: "Remote" } : {}, { approved: true }],
   };
 
   const jobs = await prismadb.job.findMany({
@@ -49,6 +41,7 @@ const JobResults: React.FC<JobResultProps> = async ({
       {jobs.map((job) => (
         <JobListItem key={job.id} job={job} />
       ))}
+      {jobs.length === 0 ? <p className="m-auto text-center">No job found. Try adjusting your search filters.</p> : null}
     </div>
   );
 };

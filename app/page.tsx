@@ -12,9 +12,7 @@ interface PageProps {
   };
 }
 
-const Home: React.FC<PageProps> = ({
-  searchParams: { q, type, location, remote },
-}) => {
+const Home: React.FC<PageProps> = ({ searchParams: { q, type, location, remote } }) => {
   const filterValues: jobFilterValues = {
     q,
     type,
@@ -29,7 +27,7 @@ const Home: React.FC<PageProps> = ({
         <p className="text-muted-foreground">Find your dream job.</p>
       </div>
       <section className="flex flex-col gap-4 md:flex-row">
-        <JobFilterSidebar />
+        <JobFilterSidebar defaultValues={filterValues} />
         <JobResults filterValues={filterValues} />
       </section>
     </main>
