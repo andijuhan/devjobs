@@ -7,8 +7,11 @@ import Footer from "@/components/Footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Cyber Jobs",
-  description: "Find your dream job",
+  title: {
+    default: "Cyber Jobs",
+    template: "%s | Cyber Jobs",
+  },
+  description: "Find your dream developer job",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
