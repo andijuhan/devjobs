@@ -33,12 +33,12 @@ export const createJobSchema = z
     title: z.string().min(1, { message: "Title is required" }).max(100),
     type: z
       .string()
-      .min(1, { message: "Type is required" })
+      .min(1, "Type is required")
       .refine((value) => jobTypes.includes(value), "Invalid job type"),
-    companyName: z.string().min(1, { message: "Company name is required" }).max(100),
+    companyName: z.string().min(1, "Company name is required").max(100),
     companyLogo: companyLogoSchema,
-    description: z.string().min(1, { message: "Description is required" }).max(5000, "Description must be less than 5000 characters"),
-    salary: z.string().min(1, { message: "Salary is required" }).regex(/^\d+$/, "Salary must be a number").max(9, "Salary must be less than 9 digits"),
+    description: z.string().min(1, "Description is required").max(5000, "Description must be less than 5000 characters"),
+    salary: z.string().min(1, "Salary is required").regex(/^\d+$/, "Salary must be a number").max(9, "Salary must be less than 9 digits"),
   })
   .and(applicationSchema)
   .and(locationSchema);
