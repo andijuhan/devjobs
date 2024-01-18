@@ -3,6 +3,7 @@
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -18,6 +19,8 @@ import { jobTypes, locationTypes } from "@/lib/job-types";
 import { Button } from "@/components/ui/button";
 import LocationInput from "@/components/LocationInput";
 import { X } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import RichTextEditor from "@/components/RichTextEditor";
 
 const NewJobForm = () => {
   const form = useForm<createJobValues>({
@@ -175,6 +178,69 @@ const NewJobForm = () => {
                       <span className="text-sm">{watch("location")}</span>
                     </div>
                   )}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="space-y-2">
+              <Label htmlFor="applicationEmail">How to apply</Label>
+              <div className="flex justify-between">
+                <FormField
+                  control={control}
+                  name="applicationEmail"
+                  render={({ field }) => (
+                    <FormItem className="grow">
+                      <FormControl>
+                        <div className="flex items-center">
+                          <Input
+                            id="applicationEmail"
+                            placeholder="Email"
+                            type="email"
+                            {...field}
+                            onChange={(e) => {
+                              field.onChange(e);
+                              trigger("applicationEmail");
+                            }}
+                          />
+                          <span className="mx-2">or</span>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={control}
+                  name="applicationUrl"
+                  render={({ field }) => (
+                    <FormItem className="grow">
+                      <FormControl>
+                        <Input
+                          placeholder="Website"
+                          type="url"
+                          {...field}
+                          onChange={(e) => {
+                            field.onChange(e);
+                            trigger("applicationUrl");
+                          }}
+                        />
+                      </FormControl>
+                      <FormDescription>Use http:// or https://</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+            <FormField
+              control={control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <Label>Description</Label>
+                  <FormControl>
+                    <RichTextEditor />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
