@@ -3,7 +3,6 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import Select from "./ui/select";
 import { jobTypes } from "@/lib/job-types";
-import { Button } from "./ui/button";
 import { jobFilterSchema, jobFilterValues } from "@/lib/validation";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -31,7 +30,9 @@ interface JobFilterSidebarProps {
 }
 
 //server action in server component
-const JobFilterSidebar: React.FC<JobFilterSidebarProps> = async ({ defaultValues }) => {
+const JobFilterSidebar: React.FC<JobFilterSidebarProps> = async ({
+  defaultValues,
+}) => {
   const distinctLocation = (await prismadb.job
     .findMany({
       where: { approved: true },
@@ -49,11 +50,21 @@ const JobFilterSidebar: React.FC<JobFilterSidebarProps> = async ({ defaultValues
         <div className="space-y-4">
           <div className="flex flex-col gap-2">
             <Label htmlFor="q">Search</Label>
-            <Input id="q" name="q" defaultValue={defaultValues.q} placeholder="Title, company, etc." />
+            <Input
+              id="q"
+              name="q"
+              defaultValue={defaultValues.q}
+              placeholder="Title, company, etc."
+            />
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="type">Type</Label>
-            <Select id="type" name="type" className="" defaultValue={defaultValues.type || ""}>
+            <Select
+              id="type"
+              name="type"
+              className=""
+              defaultValue={defaultValues.type || ""}
+            >
               <option value="">All type</option>
               {jobTypes.map((type) => (
                 <option key={type} value={type}>
@@ -64,7 +75,12 @@ const JobFilterSidebar: React.FC<JobFilterSidebarProps> = async ({ defaultValues
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="location">Location</Label>
-            <Select id="location" name="location" className="" defaultValue={defaultValues.location || ""}>
+            <Select
+              id="location"
+              name="location"
+              className=""
+              defaultValue={defaultValues.location || ""}
+            >
               <option value="">All location</option>
               {distinctLocation.map((location) => (
                 <option key={location} value={location}>
@@ -74,7 +90,13 @@ const JobFilterSidebar: React.FC<JobFilterSidebarProps> = async ({ defaultValues
             </Select>
           </div>
           <div className="flex items-center gap-2">
-            <input type="checkbox" id="remote" name="remote" className="scale-125 accent-black" defaultChecked={defaultValues.remote} />
+            <input
+              type="checkbox"
+              id="remote"
+              name="remote"
+              className="scale-125 accent-black"
+              defaultChecked={defaultValues.remote}
+            />
             <Label htmlFor="remote">Remote</Label>
           </div>
           <FormSubmitButton type="submit" className="w-full">

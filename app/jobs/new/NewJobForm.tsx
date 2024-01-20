@@ -21,6 +21,9 @@ import LocationInput from "@/components/LocationInput";
 import { X } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import RichTextEditor from "@/components/RichTextEditor";
+import { draftToMarkdown } from "markdown-draft-js";
+import LoadingButton from "@/components/LoadingButton";
+import { createJobPosting } from "./action";
 
 const NewJobForm = () => {
   const form = useForm<createJobValues>({
@@ -38,7 +41,17 @@ const NewJobForm = () => {
   } = form;
 
   const onSubmit = async (values: createJobValues) => {
-    alert(JSON.stringify(values, null, 2));
+    const formData = new FormData();
+
+    Object.entries(values).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+
+    try {
+      await createJobPosting(formData);
+    } catch (error) {
+      alert("Something went wrong");
+    }
   };
 
   return (
@@ -138,7 +151,16 @@ const NewJobForm = () => {
                 <FormItem>
                   <FormLabel>Location</FormLabel>
                   <FormControl>
-                    <Select {...field} defaultValue="">
+                    <Select
+                      {...field}
+                      defaultValue=""
+                      onChange={(e) => {
+                        field.onChange(e);
+                        if (e.currentTarget.value === "Remote") {
+                          trigger("location");
+                        }
+                      }}
+                    >
                       <option value="" hidden>
                         Select an option
                       </option>
@@ -237,15 +259,36 @@ const NewJobForm = () => {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <Label>Description</Label>
+                  <Label onClick={() => setFocus("description")}>
+                    Description
+                  </Label>
                   <FormControl>
-                    <RichTextEditor />
+                    <RichTextEditor
+                      //convert plain html to markdown and save to useForm state
+                      onChange={(draf) => field.onChange(draftToMarkdown(draf))}
+                      ref={field.ref}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button type="submit">Submit</Button>
+            <FormField
+              control={control}
+              name="salary"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Salary</FormLabel>
+                  <FormControl>
+                    <Input {...field} type="number" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <LoadingButton type="submit" loading={isSubmitting}>
+              Submit
+            </LoadingButton>
           </form>
         </Form>
       </div>
