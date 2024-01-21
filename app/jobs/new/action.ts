@@ -52,7 +52,7 @@ export const createJobPosting = async (formData: FormData) => {
       location,
       applicationEmail: applicationEmail?.trim(),
       applicationUrl: applicationUrl?.trim(),
-      description: description.trim(),
+      description: description?.trim(),
       salary: parseInt(salary),
       approved: true,
     },

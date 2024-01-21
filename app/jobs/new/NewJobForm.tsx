@@ -10,7 +10,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import H1 from "@/components/ui/h1";
-import { createJobSchema, createJobValues } from "@/lib/validation";
+import { createJobSchema, CreateJobValues } from "@/lib/validation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
@@ -26,7 +26,7 @@ import LoadingButton from "@/components/LoadingButton";
 import { createJobPosting } from "./action";
 
 const NewJobForm = () => {
-  const form = useForm<createJobValues>({
+  const form = useForm<CreateJobValues>({
     resolver: zodResolver(createJobSchema),
   });
 
@@ -40,11 +40,13 @@ const NewJobForm = () => {
     formState: { isSubmitting },
   } = form;
 
-  const onSubmit = async (values: createJobValues) => {
+  const onSubmit = async (values: CreateJobValues) => {
     const formData = new FormData();
 
     Object.entries(values).forEach(([key, value]) => {
-      formData.append(key, value);
+      if (value) {
+        formData.append(key, value);
+      }
     });
 
     try {

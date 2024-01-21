@@ -1,6 +1,9 @@
 import { z } from "zod";
 import { jobTypes, locationTypes } from "./job-types";
 
+const requiredString = z.string().min(1, "Required");
+const numericRequiredString = requiredString.regex(/^\d+$/, "Must be a number");
+
 const companyLogoSchema = z
   .custom<File | undefined>()
   .refine(
@@ -8,7 +11,7 @@ const companyLogoSchema = z
     "Must be an image file",
   )
   .refine((file) => {
-    return !file || file.size < 2 * 1024 * 1024;
+    return !file || file.size < 1024 * 1024 * 2;
   }, "File must be less than 2MB");
 
 const applicationSchema = z
@@ -17,20 +20,17 @@ const applicationSchema = z
     applicationUrl: z.string().max(100).url().optional().or(z.literal("")),
   })
   .refine((data) => data.applicationEmail || data.applicationUrl, {
-    message: "Please provide at least one application method",
+    message: "Email or url is required",
     path: ["applicationEmail"],
   });
 
 const locationSchema = z
   .object({
-    locationType: z
-      .string()
-      .min(1, { message: "Location type is required" })
-      .refine(
-        (value) => locationTypes.includes(value),
-        "Invalid location type",
-      ),
-    location: z.string().max(200).optional(),
+    locationType: requiredString.refine(
+      (value) => locationTypes.includes(value),
+      "Invalid location type",
+    ),
+    location: z.string().max(100).optional(),
   })
   .refine(
     (data) =>
@@ -43,27 +43,23 @@ const locationSchema = z
 
 export const createJobSchema = z
   .object({
-    title: z.string().min(1, { message: "Title is required" }).max(100),
-    type: z
-      .string()
-      .min(1, "Type is required")
-      .refine((value) => jobTypes.includes(value), "Invalid job type"),
-    companyName: z.string().min(1, "Company name is required").max(100),
+    title: requiredString.max(100),
+    type: requiredString.refine(
+      (value) => jobTypes.includes(value),
+      "Invalid job type",
+    ),
+    companyName: requiredString.max(100),
     companyLogo: companyLogoSchema,
-    description: z
-      .string()
-      .min(1, "Description is required")
-      .max(5000, "Description must be less than 5000 characters"),
-    salary: z
-      .string()
-      .min(1, "Salary is required")
-      .regex(/^\d+$/, "Salary must be a number")
-      .max(9, "Salary must be less than 9 digits"),
+    description: z.string().max(5000).optional(),
+    salary: numericRequiredString.max(
+      9,
+      "Number can't be longer than 9 digits",
+    ),
   })
   .and(applicationSchema)
   .and(locationSchema);
 
-export type createJobValues = z.infer<typeof createJobSchema>;
+export type CreateJobValues = z.infer<typeof createJobSchema>;
 
 export const jobFilterSchema = z.object({
   q: z.string().optional(),
@@ -72,5 +68,4 @@ export const jobFilterSchema = z.object({
   remote: z.coerce.boolean().optional(),
 });
 
-//convert schema to type
-export type jobFilterValues = z.infer<typeof jobFilterSchema>;
+export type JobFilterValues = z.infer<typeof jobFilterSchema>;

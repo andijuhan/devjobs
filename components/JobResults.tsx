@@ -1,19 +1,19 @@
 import React from "react";
 import JobListItem from "./JobListItem";
 import prismadb from "@/lib/prisma";
-import { jobFilterValues } from "@/lib/validation";
+import { JobFilterValues } from "@/lib/validation";
 import { Prisma } from "@prisma/client";
 
 interface JobResultProps {
-  filterValues: jobFilterValues;
+  filterValues: JobFilterValues;
 }
-const JobResults: React.FC<JobResultProps> = async ({ filterValues: { q, type, location, remote } }) => {
+const JobResults: React.FC<JobResultProps> = async ({
+  filterValues: { q, type, location, remote },
+}) => {
   const searchString = q
     ?.split(" ")
     .filter((word) => word.length > 0)
     .join(" & ");
-
-  console.log(searchString);
 
   const searchFilter: Prisma.JobWhereInput = searchString
     ? {
@@ -28,7 +28,13 @@ const JobResults: React.FC<JobResultProps> = async ({ filterValues: { q, type, l
     : {};
 
   const where: Prisma.JobWhereInput = {
-    AND: [searchFilter, type ? { type } : {}, location ? { location } : {}, remote ? { locationType: "Remote" } : {}, { approved: true }],
+    AND: [
+      searchFilter,
+      type ? { type } : {},
+      location ? { location } : {},
+      remote ? { locationType: "Remote" } : {},
+      { approved: true },
+    ],
   };
 
   const jobs = await prismadb.job.findMany({
@@ -41,7 +47,11 @@ const JobResults: React.FC<JobResultProps> = async ({ filterValues: { q, type, l
       {jobs.map((job) => (
         <JobListItem key={job.id} job={job} />
       ))}
-      {jobs.length === 0 ? <p className="m-auto text-center">No job found. Try adjusting your search filters.</p> : null}
+      {jobs.length === 0 ? (
+        <p className="m-auto text-center">
+          No job found. Try adjusting your search filters.
+        </p>
+      ) : null}
     </div>
   );
 };
