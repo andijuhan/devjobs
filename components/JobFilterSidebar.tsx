@@ -3,7 +3,7 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import Select from "./ui/select";
 import { jobTypes } from "@/lib/job-types";
-import { jobFilterSchema, jobFilterValues } from "@/lib/validation";
+import { jobFilterSchema, JobFilterValues } from "@/lib/validation";
 import { redirect } from "next/navigation";
 import React from "react";
 import FormSubmitButton from "./FormSubmitButton";
@@ -26,7 +26,7 @@ const filterJobs = async (formData: FormData) => {
 };
 
 interface JobFilterSidebarProps {
-  defaultValues: jobFilterValues;
+  defaultValues: JobFilterValues;
 }
 
 //server action in server component

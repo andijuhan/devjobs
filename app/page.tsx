@@ -1,7 +1,7 @@
 import JobFilterSidebar from "@/components/JobFilterSidebar";
 import JobResults from "@/components/JobResults";
 import H1 from "@/components/ui/h1";
-import { jobFilterValues } from "@/lib/validation";
+import { JobFilterValues } from "@/lib/validation";
 import { Metadata } from "next";
 
 interface PageProps {
@@ -13,22 +13,37 @@ interface PageProps {
   };
 }
 
-const getTitle = ({ q, type, location, remote }: jobFilterValues) => {
-  const titlePrefix = q ? `${q} jobs` : type ? `${type} developer jobs` : remote ? "Remote developer jobs" : "All developer jobs";
+const getTitle = ({ q, type, location, remote }: JobFilterValues) => {
+  const titlePrefix = q
+    ? `${q} jobs`
+    : type
+      ? `${type} developer jobs`
+      : remote
+        ? "Remote developer jobs"
+        : "All developer jobs";
 
   const titleSuffix = location ? `in ${location}` : "";
 
   return `${titlePrefix} ${titleSuffix}`;
 };
 
-export const generateMetadata = ({ searchParams: { q, type, location, remote } }: PageProps): Metadata => {
+export const generateMetadata = ({
+  searchParams: { q, type, location, remote },
+}: PageProps): Metadata => {
   return {
-    title: `${getTitle({ q, type, location, remote: remote === "true" })} | Cyber Jobs`,
+    title: `${getTitle({
+      q,
+      type,
+      location,
+      remote: remote === "true",
+    })} | Cyber Jobs`,
   };
 };
 
-const Home: React.FC<PageProps> = ({ searchParams: { q, type, location, remote } }) => {
-  const filterValues: jobFilterValues = {
+const Home: React.FC<PageProps> = ({
+  searchParams: { q, type, location, remote },
+}) => {
+  const filterValues: JobFilterValues = {
     q,
     type,
     location,
