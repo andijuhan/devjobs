@@ -3,6 +3,7 @@ import JobListItem from "./JobListItem";
 import prismadb from "@/lib/prisma";
 import { JobFilterValues } from "@/lib/validation";
 import { Prisma } from "@prisma/client";
+import Link from "next/link";
 
 interface JobResultProps {
   filterValues: JobFilterValues;
@@ -45,7 +46,9 @@ const JobResults: React.FC<JobResultProps> = async ({
   return (
     <div className="grow space-y-4">
       {jobs.map((job) => (
-        <JobListItem key={job.id} job={job} />
+        <Link key={job.id} href={`/jobs/${job.slug}`} className="block">
+          <JobListItem key={job.id} job={job} />
+        </Link>
       ))}
       {jobs.length === 0 ? (
         <p className="m-auto text-center">
