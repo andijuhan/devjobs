@@ -11,7 +11,7 @@ interface JobListItemProps {
 
 const JobListItem: React.FC<JobListItemProps> = ({ job }) => {
   return (
-    <article className="flex gap-3 rounded-lg border p-5 hover:bg-muted/60">
+    <article className="flex gap-3 rounded-lg border bg-white p-5 hover:bg-gray-50">
       <Image
         src={job.companyLogoUrl || companyLogoPlaceholder}
         alt={`${job.companyName} logo`}

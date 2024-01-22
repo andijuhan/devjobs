@@ -14,10 +14,14 @@ export const metadata: Metadata = {
   description: "Find your dream developer job",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
-      <body className={`${inter.className} min-w-[350px]`}>
+      <body className={`${inter.className} min-w-[350px] bg-gray-100`}>
         <Navbar />
         {children}
         <Footer />

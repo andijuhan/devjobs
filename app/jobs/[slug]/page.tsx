@@ -61,15 +61,8 @@ export default async function page({ params: { slug } }: PageProps) {
   }
 
   return (
-    <main className="m-auto my-10 flex max-w-5xl flex-col items-center gap-5 px-3 md:flex-row md:items-start">
-      <JobDetailPage job={job} />
-      <aside>
-        <Button asChild>
-          <a href={applyUrl} className="w-40 md:w-fit">
-            Apply now
-          </a>
-        </Button>
-      </aside>
+    <main className="m-auto my-4 flex max-w-5xl flex-col items-center gap-5 rounded px-5 py-10 md:flex-row md:items-start">
+      <JobDetailPage job={job} applyUrl={applyUrl} />
     </main>
   );
 }

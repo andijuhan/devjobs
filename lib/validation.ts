@@ -50,7 +50,7 @@ export const createJobSchema = z
     ),
     companyName: requiredString.max(100),
     companyLogo: companyLogoSchema,
-    description: z.string().max(5000).optional(),
+    description: z.string().max(15000).optional(),
     salary: numericRequiredString.max(
       9,
       "Number can't be longer than 9 digits",
